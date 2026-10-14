@@ -1,0 +1,26 @@
+name: Shop Ledger checks
+on:
+  pull_request:
+    paths:
+      - "shop-ledger/**"
+      - ".github/workflows/shop-ledger.yml"
+  push:
+    branches: ["main", "feature/shop-ledger-v1"]
+    paths:
+      - "shop-ledger/**"
+      - ".github/workflows/shop-ledger.yml"
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: shop-ledger
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run build
